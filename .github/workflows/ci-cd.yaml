@@ -1,0 +1,41 @@
+# .github/workflows/ci-cd.yaml
+name: CI/CD Pipeline
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd app
+          npm install
+
+      - name: Build React App
+        run: |
+          cd app
+          npm run build
+
+      - name: Docker Build
+        run: |
+          docker build -t devops-frontend:latest ./app
+
+      - name: Save Docker Image Artifact
+        run: |
+          docker save devops-frontend:latest -o devops-frontend.tar
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: devops-image
+          path: devops-frontend.tar
