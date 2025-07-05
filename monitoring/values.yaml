@@ -1,4 +1,4 @@
-# monitoring/values.yaml
+
 server:
   enabled: true
   extraScrapeConfigs: |
