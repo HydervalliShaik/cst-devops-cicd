@@ -1,0 +1,11 @@
+
+{
+  "title": "Frontend Monitoring",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Uptime",
+      "targets": [{"expr": "up", "format": "time_series"}]
+    }
+  ]
+}

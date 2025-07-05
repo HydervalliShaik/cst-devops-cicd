@@ -1,0 +1,17 @@
+# monitoring/prometheus.yaml
+scrape_configs:
+  - job_name: 'frontend'
+    static_configs:
+      - targets: ['localhost:3000']
+
+# monitoring/grafana-dashboards/app-dashboard.json
+{
+  "title": "Frontend Monitoring",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Uptime",
+      "targets": [{"expr": "up", "format": "time_series"}]
+    }
+  ]
+}
