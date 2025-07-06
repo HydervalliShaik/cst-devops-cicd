@@ -58,7 +58,7 @@ jobs:
         working-directory: terraform
 
 
-      - name: Deploy to Kubernetes (Simulated)
+      - name: Deploy to Kubernetes
         run: |
          echo "Applying Kubernetes manifests..."
          bash scripts/deploy.sh
