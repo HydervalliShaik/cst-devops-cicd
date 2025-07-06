@@ -1,5 +1,5 @@
-
 name: CI/CD Pipeline
+
 on:
   push:
     branches: ["main"]
@@ -7,6 +7,7 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,7 +27,7 @@ jobs:
           cd app
           npm run build
 
-      - name: Docker Build
+      - name: Build Docker Image
         run: |
           docker build -t devops-frontend:latest ./app
 
@@ -34,8 +35,31 @@ jobs:
         run: |
           docker save devops-frontend:latest -o devops-frontend.tar
 
-      - name: Upload Artifact
+      - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v3
         with:
           name: devops-image
           path: devops-frontend.tar
+
+      
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: terraform
+
+
+      - name: Deploy to Kubernetes (Simulated)
+        run: |
+         echo "Applying Kubernetes manifests..."
+         bash scripts/deploy.sh
+
